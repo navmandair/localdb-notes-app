@@ -1,4 +1,5 @@
 const fs = require('fs')
+const chalk = require('chalk')
 
 const noteDatabaseFilePath = 'db.json'
 
@@ -15,9 +16,9 @@ const addNote = function(title, body){
     if(duplicateNotes.length == 0){
         notes.push({title, body});
         saveNotes(notes);
-        console.log('Note added!')
+        console.log(chalk.green('Note added!'))
     }else{
-        console.log('Duplicate note please change title to something else!')
+        console.log(chalk.red('Duplicate note please change title to something else!'))
     }
     
 }
@@ -31,9 +32,9 @@ const removeNote = function(title){
     if(notes.length !== filteredNotes.length){
         console.log(filteredNotes)
         saveNotes(filteredNotes)
-        console.log('Note removed!')    
+        console.log(chalk.green('Note removed!'))   
     }else{
-        console.log('Note not found!')
+        console.log(chalk.red('Note not found!'))
     }
     
 }
