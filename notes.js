@@ -12,13 +12,28 @@ const addNote = function(title, body){
     const duplicateNotes = notes.filter(function(note){
         return note.title === title;
     })
-    console.log(duplicateNotes);
     if(duplicateNotes.length == 0){
         notes.push({title, body});
         saveNotes(notes);
         console.log('Note added!')
     }else{
         console.log('Duplicate note please change title to something else!')
+    }
+    
+}
+
+
+const removeNote = function(title){
+    const notes = loadNotes();
+    const filteredNotes = notes.filter(function(note){
+        return note.title !== title;
+    })
+    if(notes.length !== filteredNotes.length){
+        console.log(filteredNotes)
+        saveNotes(filteredNotes)
+        console.log('Note removed!')    
+    }else{
+        console.log('Note not found!')
     }
     
 }
@@ -41,5 +56,6 @@ const saveNotes = function(notes){
 
 module.exports = {
     addNote: addNote,
+    removeNote: removeNote,
     getNotes: getNotes
 };
