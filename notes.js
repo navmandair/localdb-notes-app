@@ -4,16 +4,21 @@ const chalk = require('chalk')
 const noteDatabaseFilePath = 'db.json'
 
 
-const getNotes  = function(){
-    return loadNotes();
-}
-
-const addNote = function(title, body){
+const getNote  = (title) => {
     const notes = loadNotes();
-    const duplicateNotes = notes.filter(function(note){
-        return note.title === title;
-    })
-    if(duplicateNotes.length == 0){
+    const note = notes.find(note => note.title === title)
+    if(note){
+        console.log(note.body)
+    }else{
+        console.log(chalk.red('Note not found!'))
+    }
+    
+};
+
+const addNote = (title, body) => {
+    const notes = loadNotes();
+    const duplicateNote = notes.find(note => note.title === title)
+    if(!duplicateNote){
         notes.push({title, body});
         saveNotes(notes);
         console.log(chalk.green('Note added!'))
@@ -23,14 +28,18 @@ const addNote = function(title, body){
     
 }
 
+const listNotes = () => {
+    console.log(chalk.bold('Your Notes:'))
+    let data = loadNotes();
+    data.map(note => (console.log(note.title)))
+}
 
-const removeNote = function(title){
+
+
+const removeNote = (title) =>{
     const notes = loadNotes();
-    const filteredNotes = notes.filter(function(note){
-        return note.title !== title;
-    })
+    const filteredNotes = notes.filter((note) => note.title !== title)
     if(notes.length !== filteredNotes.length){
-        console.log(filteredNotes)
         saveNotes(filteredNotes)
         console.log(chalk.green('Note removed!'))   
     }else{
@@ -39,7 +48,7 @@ const removeNote = function(title){
     
 }
 
-const loadNotes = function(){
+const loadNotes = () => {
     try{
         let stringData = fs.readFileSync(noteDatabaseFilePath).toString()
         let data = JSON.parse(stringData)
@@ -50,7 +59,7 @@ const loadNotes = function(){
 }
 
 
-const saveNotes = function(notes){
+const saveNotes = (notes) => {
     let data = JSON.stringify(notes);
     fs.writeFileSync(noteDatabaseFilePath, data)
 }
@@ -58,5 +67,6 @@ const saveNotes = function(notes){
 module.exports = {
     addNote: addNote,
     removeNote: removeNote,
-    getNotes: getNotes
+    listNotes: listNotes,
+    getNote: getNote
 };
